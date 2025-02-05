@@ -172,10 +172,10 @@ GuiClose:
 
 ; Functions are snippits of code which can be reused later. 
 
-winTitleActive(WinTitle, WaitSecs) {
+winTitleActive(winTitle, waitSecs) {
 ; Repeatedly check if a specified window is currently focused. When combined with an if statement, can safely execute commands only once the intended window opens.
-; WinTitle: expects a str of the Window's name wrapped in double quotes "" (include ahk_class/exe/pid within quotes if not using the title)
-; WaitSecs: expects an int representing the length of time the function should wait for the window before returning False
+; winTitle: expects a str of the Window's name wrapped in double quotes "" (include ahk_class/exe/pid within quotes if not using the title)
+; waitSecs: expects an int representing the length of time the function should wait for the window before returning False
 
 ; Example usage:
 ; if winTitleActive("Enhanced Attribute Editor", 2) {
@@ -185,12 +185,12 @@ winTitleActive(WinTitle, WaitSecs) {
 ; The function will check if Dynamic Block text entry form is active for two seconds.
 ; 'hello world' will only be typed if the window is open, otherwise those instructions will never be activated.
 
-	timeout := (WaitSecs * 1000)
+	timeout := (waitSecs * 1000)
 	start_time := A_TickCount ; Get the current timestamp
-	while (!WinActive(WinTitle) && (A_TickCount - start_time) < timeout) {
+	while (!WinActive(winTitle) && (A_TickCount - start_time) < timeout) {
 		Sleep, 100
 	}
-	if (WinActive(WinTitle)) {
+	if (WinActive(winTitle)) {
 		return True
 	}
 	else {
@@ -289,13 +289,12 @@ Num7::
 
 Num9::
 ; For this hotkey, hover over a dynamic block with text input options before pressing the hotkey
-	BlockInput, MouseMove ; disables mouse to prevent accentially moving off position while the commands takes place
+	BlockInput, MouseMove                                  ; disables mouse to prevent accentially moving off position while the commands takes place
 	Send,{Esc}_eattedit{enter}
-	Send,{LButton} ; sends a left mouse click
-	BlockInput, MouseMoveOff ; renables mouse
-  ; for details on 'winTitleActive', see the 'Functions' section
-  if winTitleActive("Enhanced Attribute Editor", 2) {
-    ; Everything inside the {} braces will only trigger if AHK detects a window called "Enhanced Attribute Editor" is focused
+	Send,{LButton}                                         ; sends a left mouse click
+	BlockInput, MouseMoveOff                               ; renables mouse
+  if winTitleActive("Enhanced Attribute Editor", 2) {    ; for details on 'winTitleActive', see the 'Functions' section
+    ; Everything inside these {} braces will only trigger if AHK detects a window called "Enhanced Attribute Editor" is focused
     MsgBox, If you successsfully clicked into a dynamic block you will see this message.
   }
   else {
